@@ -1,0 +1,954 @@
+<apex:page controller="HotelResrvationPopup">
+<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+<apex:includeScript value="https://code.jquery.com/jquery-1.9.1.js" />
+        <apex:includeScript value="https://code.jquery.com/ui/1.10.3/jquery-ui.js" />
+
+   <apex:form >
+   
+   <script>
+  
+    $j = jQuery.noConflict();
+                $j(document).ready(function() {
+            
+                $j( ".event_start_date" ).datepicker(
+           {
+             defaultDate: "+1w",
+             changeMonth: true,
+             changeYear: true,
+             numberOfMonths: 1,
+             dateFormat:"dd/mm/yy",
+             altField: "#event_start_date_alternate",
+             altFormat: "dd/mm/yy",
+             showAnim: "slide"
+           })
+     
+     
+     });
+     
+     function Update(myid)
+        {
+           
+               debugger;
+            var Hotel= "j_id0:j_id5:rowNum:"+myid+":Id";
+           var HotelName=  "j_id0:j_id5:rowNum:"+myid+":HotelName";
+      
+          
+           
+ 
+           
+
+            var Checkedindate="event_start_date"+myid;
+            
+            var Checkedoutdate="event_End_date"+myid;  
+           
+          
+            
+            
+          
+         
+         
+          
+            
+    
+            
+            
+           
+            
+            
+            
+             var resertvationoption="j_id0:j_id5:rowNum:"+myid+":resertvationoption";
+            
+              var Email="j_id0:j_id5:rowNum:"+myid+":EmailName";
+            
+            
+           var gethotel=document.getElementById(Hotel).value;
+         
+            var gethotelname=document.getElementById(HotelName).value;
+
+          
+            
+          
+            
+           
+            
+            var getCheckedindate= document.getElementById(Checkedindate).value;
+            
+            var getCheckedoutdate= document.getElementById(Checkedoutdate).value;
+            
+           
+            
+        
+            
+            var getresertvationoption= document.getElementById(resertvationoption).value;
+            
+          
+            
+           var getEmail= document.getElementById(Email).value; 
+            
+            Updatepersons(gethotel,gethotelname,getCheckedindate,getCheckedoutdate,getresertvationoption,getEmail);
+          alert('updated Sucessfully');
+           
+        }
+
+     
+     
+  
+          function SendEmail(myid)
+        {
+        
+     
+
+      var getHotelid="j_id0:j_id5:j_id35:"+myid+":Hotels";
+      var hotelid= document.getElementById(getHotelid).value; 
+        var ReservationTypeId="j_id0:j_id5:j_id35:"+myid+":resertvationoption";
+            var ReservationType= document.getElementById(ReservationTypeId).value; 
+        var StartDateId="event_start_date"+myid;
+        var StartDate= document.getElementById(StartDateId).value; 
+        var EndDateId="event_End_date"+myid;
+        var EndDate= document.getElementById(EndDateId).value;
+        var RoomType='';
+        var NumberofRooms=document.getElementById("j_id0:j_id5:NumberOfRoom1").value; 
+      var inc=0;
+      var content=''; 
+      
+      var EmailId="j_id0:j_id5:j_id35:"+myid+":EmailName";
+      var Email=document.getElementById(EmailId).value; 
+      
+      var Refrence=document.getElementById("j_id0:j_id5:HotelRefrence1").value; 
+      
+       for( var i=0;i<NumberofRooms;i++)
+       {
+       var RoomDetails=document.getElementById("j_id0:j_id5:Roomdiv:"+i+":RoomName").value; 
+    
+       RoomType=RoomDetails+','+RoomType;
+     
+      
+      
+       
+       var val=  document.getElementById("j_id0:j_id5:Roomdiv:"+i+":selected_list").value; 
+       var roomno='';
+       roomno=NumberofRooms;
+   
+       if(val=="Single")
+       {
+       debugger;
+     
+       var Variable=  document.getElementsByName("j_id0:j_id5:j_id21:"+i+":j_id23"); 
+       
+            
+       
+       
+    
+       
+         var Variable1=  document.getElementsByName("Row1Class"+i); 
+     
+    
+       
+       
+       
+        var elms = document.getElementById("Class"+i).getElementsByTagName("*");
+    for (var j = 0; j< elms.length; j++) {
+   
+    
+    if(elms[j].name!='')
+    {
+    
+   
+    content=content+'Roomno'+i+'</br>';
+    content=content+'Occupant'+j+'*'+elms[j].value +'</br>';
+ 
+    }
+    
+    
+    else
+    {
+   
+     content=content+'Roomno'+i+'</br>';
+     content=content+'Occupant'+j+'*'+document.getElementById(elms[j].id).value +'</br>';
+    }
+    
+     
+    }
+       
+       
+       
+       
+     
+       
+      
+      
+   }
+       else
+       {
+     var Variable=  document.getElementsByName("j_id0:j_id5:j_id21:"+i+":j_id23"); 
+       
+            
+       
+       
+    
+       
+         var Variable1=  document.getElementsByName("Row1Class"+i); 
+     
+      
+       
+       
+       
+        var elms = document.getElementById("Class"+i).getElementsByTagName("*");
+    for (var j = 0; j< elms.length; j++) {
+   
+    
+    if(elms[j].name!='')
+    {
+    
+   
+    content=content+'Roomno'+i+'</br>';
+    content=content+'Occupant'+j+'*'+elms[j].value +'</br>';
+ 
+    }
+    
+    
+    else
+    {
+       if(j=='0')   
+       {
+      content=content+'Roomno'+i+'</br>';
+       }
+     content=content+'Occupant'+j+'*'+document.getElementById(elms[j].id).value +'</br>';
+    }
+    
+     
+    }
+       
+       
+       
+       
+       }
+       
+  
+     
+     
+       }
+        
+     
+           
+        window.open('/apex/SendEmailHotelReservation?Startdate='+StartDate+'&Enddate='+EndDate+'&hotelid='+hotelid+'&Email='+Email+'&Content='+content+'&ReservationType='+ReservationType+'&NumberofRooms='+NumberofRooms+'&Refrence='+Refrence, '_blank', 'toolbar=0,location=0,menubar=0');
+       }
+  
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     function AddPerson()
+        {
+        
+        debugger;
+         
+             var NumberofRowsCount="j_id0:j_id5:Numberofrows";
+      
+             
+           var getNumberofRowsCount= document.getElementById(NumberofRowsCount).value;
+      
+      
+      alert(getNumberofRowsCount);
+     
+     
+  
+     
+     
+     
+     
+     
+      
+      
+      
+       debugger;
+           for(var i=0;i<getNumberofRowsCount;i++)
+           {
+             Saveallhotels(i);
+          }
+        alert('Saved Sucessfully');
+        }
+
+
+
+
+function Saveallhotels(myid)
+        {
+        
+        
+        
+         debugger;
+       
+        
+            
+          
+                   
+        
+            
+               
+               
+              
+        
+            var NumberOfRoom="j_id0:j_id5:NumberOfRoom1";
+            
+                    
+            var SelectedRoomTypelist="j_id0:j_id5:Roomdiv:0:selected_list";
+            
+            
+           
+            
+            
+           var BookingRefrence="j_id0:j_id5:NumberOfRoom1";
+       
+    var BookingRefrence="j_id0:j_id5:HotelRefrence1";
+        
+         var Hotel= "j_id0:j_id5:j_id35:"+myid+":Hotels";
+           var HotelName=  "j_id0:j_id5:rowNum:"+myid+":HotelName";
+      
+          
+ 
+           
+
+            var Checkedindate="event_start_date"+myid;
+            
+            var Checkedoutdate="event_End_date"+myid;  
+           
+            var workphone="j_id0:j_id5:rowNum:"+myid+":PhoneName";
+            
+            
+            
+            var city="j_id0:j_id5:rowNum:"+myid+":CityName";
+            
+         
+         
+          
+            
+            var bookingOptions="j_id0:j_id5:rowNum:"+myid+":bookingOptions";
+            
+            
+           
+            
+            
+            
+             var resertvationoption="j_id0:j_id5:j_id35:"+myid+":resertvationoption";
+            
+              var Email="j_id0:j_id5:j_id35:"+myid+":EmailName";
+              
+              var available="j_id0:j_id5:j_id35:"+myid+":Isavailable";
+              
+           var Status= "j_id0:j_id5:j_id35:"+myid+":Status";
+              
+        debugger;
+            
+            var getStatus=document.getElementById(Status).value;
+            
+            
+            var getNumberOfRoom=document.getElementById(NumberOfRoom).value;
+            
+            
+         
+            
+            
+            
+            
+            
+            
+              var getBookingRefrence=document.getElementById(BookingRefrence).value;
+            
+            
+        var getavailable=document.getElementById(available).innerHTML ;
+           var gethotel=document.getElementById(Hotel).value;
+         
+         
+         
+         
+         
+         var gethotName= document.getElementById(Hotel);
+            var gethotelname=gethotName[gethotName.selectedIndex].text;
+          
+  
+ 
+
+          
+         
+            
+           
+            
+            var getCheckedindate= document.getElementById(Checkedindate).value;
+            
+            var getCheckedoutdate= document.getElementById(Checkedoutdate).value;
+            
+           
+            var getresertvationoption= document.getElementById(resertvationoption).value;
+            
+           
+            
+           var getEmail= document.getElementById(Email).value;
+           
+           
+           
+           
+           
+            
+            
+           Addpersons(gethotel,gethotelname,getCheckedindate,getCheckedoutdate,getresertvationoption,getEmail,getavailable,getBookingRefrence,getNumberOfRoom,getStatus);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+         }
+
+
+
+
+
+     
+     
+   
+    var IsSelect='false';
+    
+    
+    
+    
+    
+    
+    
+      function   GetHotelId(value,Row)
+     {
+
+    debugger;
+      var StartDate="event_start_date"+Row;
+            
+            
+      var getStartDate=document.getElementById(StartDate).value; 
+      
+ 
+
+      Availability(value,getStartDate,Row);
+ 
+    
+        
+   
+ 
+     }
+ 
+  
+ 
+
+  function  remove_deleted_thing(GetResult,getRownum,hdnEmail)
+  
+  {
+  debugger;
+  var GetId="j_id0:j_id5:j_id35:"+getRownum+":Isavailable";
+  var hdnid="j_id0:j_id5:j_id35:"+getRownum+":EmailName";
+ document.getElementById(hdnid).value=hdnEmail;
+ 
+  document.getElementById(GetId).innerHTML =GetResult;
+ 
+  }
+  
+  
+  
+ 
+
+
+   
+ 
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     function   AddRow(value,Row)
+     {
+     debugger;
+     var roww="Class"+Row;
+   
+     if(value=="Double")
+{
+ document.getElementById(roww).innerHTML="";
+ var newHTML='<input id="Row0Class'+Row+'" type="text" placeholder="Occupant1" /> <input id="Row1Class'+Row+'" type="text" placeholder="Occupant2" />';
+ document.getElementById(roww).innerHTML=newHTML;
+ 
+}
+else if(value=="Triple")
+{
+document.getElementById(roww).innerHTML="";
+ var newHTML='<input id="Row3Class'+Row+'"   type="text" placeholder="Occupant1" /> <input id="Row4Class'+Row+'" type="text" placeholder="Occupant2" /> <input id="Row5Class'+Row+'" type="text" placeholder="Occupant3" /> ';
+ document.getElementById(roww).innerHTML=newHTML;
+}
+
+   
+ else if(value=="Single")
+{
+document.getElementById(roww).innerHTML="";
+ var newHTML='<input id="Row2Class'+Row+'"   type="text" placeholder="Occupant1" /> ';
+ document.getElementById(roww).innerHTML=newHTML;
+}
+   
+   else if(value=="twin")
+{
+document.getElementById(roww).innerHTML="";
+var newHTML='<input id="Row6Class'+Row+'"   type="text" placeholder="Occupant1"/> <input id="Row7Class'+Row+'" type="text" placeholder="Occupant2" />';
+ document.getElementById(roww).innerHTML=newHTML;
+}
+
+     }
+   </script>
+   
+   
+   <style>
+.bg_area{background:rgb(248,248,248); float:left; width:100%; padding:20px; border:solid 1px #ccc; border-top:solid 2px rgb(23,151,192); border-radius:5px; box-sizing: border-box; margin-top:10px;}
+.bg_area table tr th, .bg_area table tr td {padding:2px 5px;}
+.bg_area table tr td select{width:105px;}
+.table_Data{border-collapse:collapse;}
+.table_Data tr th{padding:10px 5px; border:solid 1px #ccc;}
+.table_Data tr td{border-left:solid 1px #ccc; padding:5px; border-bottom:solid 1px rgb(227,222,184); background:#fff;}
+.table_Data tr td:first-child{border-left:solid 1px #ccc;}
+.table_Data tr td:last-child{border-right:solid 1px #ccc;}
+.table_Data tr td input{padding:3px !important; height:17px;}
+.table_Data tr td select{padding:3px !important; height:28px;}
+.bg_area{max-width:1100px; overflow:auto; max-height:420px;}
+.table_data {
+  float: left;
+  width: 100%;
+}
+.table_data > table + span {
+  float: left;
+  width: 40%;
+  padding:80px 0 0px 10px;
+}
+.table_data > table {
+  float: left;
+}
+.Class0,.Class1, .Class2, .Class3, .Class4, .Class5, .Class6, .Class7, .Class8, .Class9, .Class10, .Class11, .Class12, .Class13, .Class14, .Class15, .Class16, .Class17, .Class18, .Class19 {
+  padding: 2px;
+}
+</style>
+   
+   
+   
+   <apex:actionFunction name="Availability" action="{!GetAvailability}"  oncomplete="remove_deleted_thing('{!showContent }','{!RowNumbers}','{!hiddenEmail}')"   reRender="tablePanel" > 
+       
+       
+             <apex:param id="ReservedTourId" value="" name="ReservedTourId"></apex:param>    
+      <apex:param id="ReservedTourDate" value="" name="ReservedTourDate"></apex:param>    
+             <apex:param id="GetNumberofRows" value="" name="GetNumberofRows"></apex:param>  
+      
+   
+        </apex:actionFunction>
+        
+        
+
+   
+   
+  <!-- Begin Default Content REMOVE THIS -->
+
+
+<div class="table_data">
+
+
+  
+
+
+<table>
+<tr>
+<th>
+Booking Refrence
+</th>
+<th>
+        <apex:inputText id="HotelRefrence1" value="{!BookingRefrance}"/>
+</th>
+ 
+
+<button type="button"  onclick="AddPerson();" id="btn{!rowNum}"  class="clsAddPerson"  >+Save</button> 
+        
+</tr>
+
+<tr>
+<th>
+TourName
+</th>
+
+<th>
+ <apex:inputText id="TourName1" value="{!ToursName}"/>
+</th>
+
+</tr>
+
+<tr>
+<th>
+Number of rooms: 
+</th>
+
+<th>
+<apex:inputText id="NumberOfRoom1" value="{!NumberOfRoom}"/>
+</th>
+
+
+</tr>
+
+<tr>
+<th>
+
+
+ 
+ 
+
+ 
+ 
+
+<apex:variable value="{!0}" var="rowNumber"/>
+
+<apex:repeat value="{!iter}" id="Roomdiv" >
+          
+        
+        <tr id="{!rowNumber}" >
+          
+          <td>
+                           <apex:outputLabel value="Room#{!rowNumber+1}-Type" />     
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                           
+                            </td>
+
+                <td>
+                 
+                  
+                    
+                   <apex:inputText id="RoomName" html-placeholder="RoomName{!rowNumber+1}" />
+                   
+                   
+    
+    
+    <apex:actionRegion >
+                 
+        <apex:selectList id="selected_list" value="{!temp}" onchange="javascript:AddRow(this.value,'{!rowNumber}')" required="false" size="1"> 
+
+            
+            <apex:selectOption itemvalue="Single" itemLabel="Single"/>
+            <apex:selectOption itemvalue="Double" itemLabel="Double"/>
+             <apex:selectOption itemvalue="twin" itemLabel="twin"/>
+            <apex:selectOption itemvalue="Triple" itemLabel="Triple"/>
+           
+            
+        </apex:selectList>
+              
+                                
+           </apex:actionRegion>
+                 
+       
+         
+                </td>
+                
+                
+                </tr>
+                   <apex:variable var="rowNumber" value="{!rowNumber+1}"/>  
+                
+             </apex:repeat>
+                   <apex:outputPanel id="Details">
+           
+                         
+            </apex:outputPanel>
+
+
+</th>
+</tr>
+
+
+
+</table>
+
+<apex:outputPanel id="Details1">
+
+
+
+
+
+      
+       
+       <apex:repeat value="{!listValueOfTextBox}" var="item" rendered="{!IF(((listValueOfTextBox!=null) && listValueOfTextBox.size  > 0) , true , false)}" >
+
+           
+
+<div id="{!item.RowID}" class="{!item.RowID}" > 
+
+           <apex:inputText />
+          </div>
+   
+       </apex:repeat>
+    
+          
+            </apex:outputPanel>
+     
+
+</div>
+  
+  <apex:variable value="{!0}" var="rowNum"/>
+    
+<div class="bg_area1">
+<!--<table>
+<tr>
+<th>
+Hotel
+</th>
+
+
+
+<th>
+Check-in-date
+</th>
+<th>
+Check-out-date
+</th>
+
+<th>
+BookingStatus
+</th>
+<th>
+Email
+</th>
+
+
+</tr>
+
+
+<div class="repeated_data">
+
+  
+  
+  
+  
+  
+
+</div>
+        
+        
+        
+        
+        
+
+
+</table>-->
+
+
+
+ <apex:inputHidden value="{!HotId}" id="Numberofrows"/>
+
+ <apex:inputHidden id="hdnEmail"/>
+
+
+ <apex:inputHidden value="{!testing}" id="HotelAvailable"/>
+
+
+
+
+
+
+
+
+
+
+
+
+ <apex:actionFunction name="Addpersons" action="{!Add}"   oncomplete="onControllerReturn1()"   > 
+       
+       
+             <apex:param id="HotelId" value="" name="HotelId"></apex:param>    
+      <apex:param id="HotelName" value="" name="HotelName"></apex:param>    
+         
+      <apex:param id="Checkedindate" value="" name="Checkedindate"></apex:param>  
+      <apex:param id="Checkedoutdate" value="" name="Checkedoutdate"></apex:param> 
+     
+      <apex:param id="resertvationoption" value="" name="resertvationoption"></apex:param>    
+      
+      <apex:param id="Email" value="" name="Email"></apex:param> 
+      
+      
+         <apex:param id="Isavailable" value="" name="Isavailable"></apex:param> 
+         
+           <apex:param id="BookingRefrence" value="" name="BookingRefrence"></apex:param> 
+             <apex:param id="Numberofroom" value="" name="Numberofroom"></apex:param> 
+           
+   
+    
+     <apex:param id="BookStatus" value="" name="BookStatus"></apex:param> 
+        </apex:actionFunction>
+
+
+
+
+
+
+          
+
+
+
+   
+        </div>
+        
+        
+        
+   
+<div class="bg_area">
+
+ <apex:variable value="{!0}" var="rowNum1"/>
+<table class="abc">
+<tr>
+<th>
+Hotel
+</th>
+
+
+
+<th>
+Check-in-date
+</th>
+<th>
+Check-out-date
+</th>
+
+<th>
+Status
+</th>
+
+
+<th>
+BookingStatus
+</th>
+<th>
+Email
+</th>
+<th>
+Available
+</th>
+<th> &nbsp; </th>
+
+</tr>
+<tr><td>
+   
+        <apex:repeat value="{!lsting}" var="item"  >
+
+
+          <tr id="{!rowNum1}">
+         
+           <td>
+             <apex:selectlist id="Hotels" size="1"   onchange="javascript:GetHotelId(this.value,'{!rowNum1}')">
+             
+                        <apex:selectOptions value="{!item.AllHotels}" />
+                        </apex:selectlist>
+                        
+           </td>           
+                        
+                  <td>
+            <input type="text"  class="event_start_date"  name="event_start_date"  value="{!lstDepdate[rowNum1]}" id="event_start_date{!rowNum1}" />
+         </td>
+         <td>
+        
+        
+             <input type="text" class="event_start_date"    value="{!lstDepdate[rowNum1+1]}" name="event_end_date" id="event_End_date{!rowNum1}"/> 
+         </td>
+            
+               
+               <td>
+                   <apex:selectList value="{!item.drpavailability }" id="Status" size="1">
+           
+            <apex:selectOptions value="{! StatusOptions }" />
+                  
+        </apex:selectList>
+               </td>
+            
+            
+            
+            
+            
+               <td>
+                   <apex:selectList id="resertvationoption" size="1">
+           
+            <apex:selectOptions value="{! ReservationOptions}" />
+                  
+        </apex:selectList>
+               </td>
+        <td>
+           
+                   <apex:inputText id="EmailName" value="{!item.PrimaryEmail}" />
+                   
+                              
+   
+        </td>
+        <td>
+
+            <apex:outputPanel id="tablePanel">
+          <apex:outputText id="Isavailable"  value="{!item.Isavailable}" />
+              </apex:outputPanel>
+       
+        </td>
+        
+                 <td>
+   
+                  
+                  
+                          <button type="button"   onclick="SendEmail({!rowNum1});"  id="SendEmail{!rowNum1}" style="background:rgb(39,136,215);color: #fff;padding: 5px 10px;border-radius: 5px;border: 0 }" classs="clsAddPerson"  >+SendEmail</button> 
+                  
+                  </td>      
+                   
+                        
+           </tr>    
+              
+                 
+                     <apex:variable var="rowNum1" value="{!rowNum1+1}"/>   
+                          
+
+       </apex:repeat>
+       
+       
+   <apex:actionFunction name="Updatepersons" action="{!UpdatePerson}"  oncomplete="onControllerReturn1()"   > 
+          
+             <apex:param id="UpdHotelId" value="" name="UpdHotelId"></apex:param>    
+      <apex:param id="UpdHotelName" value="" name="UpdHotelName"></apex:param>    
+         
+      <apex:param id="UpdCheckedindate" value="" name="UpdCheckedindate"></apex:param>  
+      <apex:param id="UpdCheckedoutdate" value="" name="UpdCheckedoutdate"></apex:param> 
+      
+      <apex:param id="Updresertvationoption" value="" name="Updresertvationoption"></apex:param>    
+      <apex:param id="UpdbookingOptions" value="" name="UpdbookingOptions"></apex:param> 
+      <apex:param id="UpdEmail" value="" name="UpdEmail"></apex:param> 
+      
+        </apex:actionFunction>
+      
+</td></tr></table> 
+        </div>
+        
+            </apex:form>
+  
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>
